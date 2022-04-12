@@ -15,12 +15,12 @@ export default class DB {
           pool: { max: 5, min: 0, ideal: 1000 },
           logging: false,
           port: config.PG_PORT,
-          // dialectOptions: {
-          //   ssl: {
-          //     require: true,
-          //     rejectUnauthorized: false
-          //   }
-          // }
+          dialectOptions: {
+            ssl: {
+              require: true,
+              rejectUnauthorized: false
+            }
+          }
         }
       );
       this.db = sequelize;
