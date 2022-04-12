@@ -1,0 +1,37 @@
+const dotenv = require('dotenv');
+dotenv.config();
+const {
+  PORT,
+  PG_HOST,
+  PG_USER,
+  PG_DATABASE,
+  PG_PASSWORD,
+  PG_PORT,
+  ENCRYPTION_KEY,
+  UPLOAD_PATH,
+  BASE_URL,
+  SESSION_SECRET,
+  IMAGE_URL,
+  FCM_SERVER_KEY,
+  FCM_COLLAPSE_KEY,
+  IOS_TEAM_ID,
+  IOS_KEY_ID
+} = process.env;
+
+export default {
+  PORT,
+  PG_HOST,
+  PG_USER,
+  PG_DATABASE,
+  PG_PASSWORD,
+  PG_PORT,
+  ENCRYPTION_KEY,
+  UPLOAD_PATH,
+  BASE_URL,
+  SESSION_SECRET,
+  IMAGE_URL,
+  FCM_SERVER_KEY,
+  FCM_COLLAPSE_KEY,
+  IOS_TEAM_ID,
+  IOS_KEY_ID
+};

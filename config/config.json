@@ -1,0 +1,11 @@
+{
+  "development": {
+    "driver":"pg",
+    "username": "authdb_user",
+    "password": "authdb",
+    "database": "authdb",
+    "host": "localhost",
+    "port":"5435",
+    "dialect": "postgres"
+  }
+}
