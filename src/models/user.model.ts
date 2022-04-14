@@ -94,7 +94,8 @@ export default class UserModel {
 
   public static updateUser = async (userObject: any) =>
     UserSchema.update(userObject, {
-      where: { id: userObject.id }
+      where: { id: userObject.id },
+      returning: true
     });
 
   public static getUserById = async (userId: any) =>
