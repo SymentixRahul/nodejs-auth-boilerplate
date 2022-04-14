@@ -8,7 +8,6 @@ const router = Router();
 import { UserController } from '../controllers';
 
 module.exports = (app: Express, passport: PassportStatic) => {
-  
   router.post('/login', UserController.login);
 
   router.post(
@@ -20,7 +19,7 @@ module.exports = (app: Express, passport: PassportStatic) => {
   router.patch(
     '/',
     uploadFileMiddleware.single('image'),
-    UserController.signup
+    UserController.updateUser
   );
 
   router.get('/:id', UserController.getUserById);
