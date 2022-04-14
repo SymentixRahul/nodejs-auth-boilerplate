@@ -47,4 +47,17 @@ export default class UserController {
       response.send(err);
     }
   };
+
+  public static getUserById = async (
+    request: express.Request,
+    response: express.Response
+  ) => {
+    try {
+      const { id } = request.params;
+      const result = await UserModel.getUserById(id);
+      response.status(200).send(result);
+    } catch (err) {
+      response.send(err);
+    }
+  };
 }

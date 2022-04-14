@@ -7,13 +7,11 @@ import config from '../../config';
 export default class UserModel {
   public static login = async (credentials: {
     email: string;
-    role: string;
     password: string;
   }) => {
     try {
-      const filter = { email: credentials.email, role: credentials.role };
       const user = await UserSchema.findOne({
-        where: filter
+        where: { email: credentials.email }
       });
       if (user && user.password) {
         const comparePass = bcrypt.compareSync(
@@ -67,7 +65,7 @@ export default class UserModel {
       }
     });
     if (userExist) {
-      return 'already exists';
+      return 'user already exists';
     } else {
       if (
         userObject.password != 'undefined' &&
@@ -94,15 +92,15 @@ export default class UserModel {
     }
   };
 
-  public static updateUser = async (userObject: any) => {
-    if (!userObject.username) {
-      userObject.username = userObject.first_name + ' _ ' + Date.now();
-    }
-    
-    return await UserSchema.update(userObject, {
+  public static updateUser = async (userObject: any) =>
+    UserSchema.update(userObject, {
       where: { id: userObject.id }
     });
-  };
+
+  public static getUserById = async (userId: any) =>
+    UserSchema.findOne({
+      where: { id: userId }
+    });
 
   private static hashPassword = async data => {
     const password = data;
