@@ -11,8 +11,6 @@ export default class UserController {
       const credentials = request.body;
       const result = await UserModel.login(credentials);
       response.status(200).send(result);
-      //   request.flash('message', 'Updated');
-      //   response.redirect('/user');
     } catch (err) {
       response.send(err);
     }
@@ -29,8 +27,22 @@ export default class UserController {
       }
       const result = await UserModel.signup(user);
       response.status(200).send(result);
-      //   request.flash('message', 'Created');
-      //   response.redirect('/user');
+    } catch (err) {
+      response.send(err);
+    }
+  };
+
+  public static updateUser = async (
+    request: express.Request,
+    response: express.Response
+  ) => {
+    try {
+      const user = request.body;
+      if (request['file']) {
+        user['image'] = 'images/' + request['file'].filename;
+      }
+      const result = await UserModel.updateUser(user);
+      response.status(200).send(result);
     } catch (err) {
       response.send(err);
     }

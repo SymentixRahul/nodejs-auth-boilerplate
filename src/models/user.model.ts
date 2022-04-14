@@ -78,7 +78,19 @@ export default class UserModel {
       if (!userObject.username) {
         userObject.username = userObject.first_name + ' _ ' + Date.now();
       }
-      return UserSchema.create(userObject);
+      const user = await UserSchema.create(userObject);
+      const token = jwt.sign(
+        {
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          role: user.role
+        },
+        config.ENCRYPTION_KEY,
+        { expiresIn: '7d' }
+      );
+      return { token };
     }
   };
 
