@@ -35,7 +35,7 @@ export default class UserModel {
           const errorDetails = {
             code: 401,
             error: 'UNAUTHORIZED',
-            originalInfo: 'Login failed!'
+            originalInfo: 'Password not match'
           };
           return errorDetails;
         }
@@ -43,7 +43,7 @@ export default class UserModel {
         const errorDetails = {
           code: 401,
           error: 'UNAUTHORIZED',
-          originalInfo: 'Login failed!'
+          originalInfo: 'Login failed! User not available'
         };
         return errorDetails;
       }
