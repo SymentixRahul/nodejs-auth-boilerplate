@@ -92,11 +92,15 @@ export default class UserModel {
     }
   };
 
-  public static updateUser = async (userObject: any) =>
-    UserSchema.update(userObject, {
+  public static updateUser = async (userObject: any) => {
+    if (userObject.password != 'undefined' && userObject.password.length > 0) {
+      userObject.password = await UserModel.hashPassword(userObject.password);
+    }
+    return UserSchema.update(userObject, {
       where: { id: userObject.id },
       returning: true
     });
+  };
 
   public static getUserById = async (userId: any) =>
     UserSchema.findOne({
