@@ -31,14 +31,17 @@ export default class UserModel {
             { expiresIn: '7d' }
           );
           const res = {
-            message: 'User logged in successfully',
             error: false,
-            data: { token, userId: user.id }
+            status: 200,
+            message: 'User logged in successfully',
+            data: { userId: user.id, token }
           };
           return res;
         } else {
           const errorDetails = {
             error: true,
+            status: 401,
+            data: null,
             message: 'Password not match'
           };
           return errorDetails;
@@ -46,6 +49,8 @@ export default class UserModel {
       } else {
         const errorDetails = {
           error: true,
+          status: 401,
+          data: null,
           message: 'Login failed! User not available'
         };
         return errorDetails;
@@ -53,6 +58,8 @@ export default class UserModel {
     } catch (err) {
       const errorDetails = {
         error: true,
+        status: 501,
+        data: null,
         message: err
       };
       return errorDetails;
@@ -67,7 +74,12 @@ export default class UserModel {
       }
     });
     if (userExist) {
-      return { message: 'User already exists', error: true };
+      return {
+        status: 409,
+        error: true,
+        message: 'User already exists',
+        data: null
+      };
     } else {
       if (
         userObject.password != 'undefined' &&
@@ -91,9 +103,10 @@ export default class UserModel {
         { expiresIn: '7d' }
       );
       const res = {
-        message: 'User register successfully',
+        status: 200,
         error: false,
-        data: { token, userId: user.id }
+        message: 'User register successfully',
+        data: { userId: user.id, token }
       };
       return res;
     }
@@ -103,16 +116,55 @@ export default class UserModel {
     if (userObject.password != 'undefined' && userObject.password.length > 0) {
       userObject.password = await UserModel.hashPassword(userObject.password);
     }
-    return UserSchema.update(userObject, {
-      where: { id: userObject.id },
-      returning: true
+    const user = await UserSchema.findOne({
+      where: { id: userObject.id }
     });
+
+    if (!user) {
+      console.log('called');
+      const res = {
+        status: 404,
+        error: true,
+        message: 'User not exists',
+        data: null
+      };
+      return res;
+    } else {
+      const updatedUser = await UserSchema.update(userObject, {
+        where: { id: userObject.id },
+        returning: true
+      });
+      const res = {
+        status: 200,
+        error: false,
+        message: 'User updated successfully',
+        data: updatedUser
+      };
+      return res;
+    }
   };
 
-  public static getUserById = async (userId: any) =>
-    UserSchema.findOne({
+  public static getUserById = async (userId: any) => {
+    const user = await UserSchema.findOne({
       where: { id: userId }
     });
+    if (!user) {
+      const res = {
+        status: 404,
+        error: true,
+        message: 'User not exists',
+        data: null
+      };
+      return res;
+    }
+    const res = {
+      status: 200,
+      error: false,
+      message: 'User fetch successfully',
+      data: user
+    };
+    return res;
+  };
 
   private static hashPassword = async data => {
     const password = data;

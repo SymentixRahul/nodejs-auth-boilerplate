@@ -10,7 +10,7 @@ export default class UserController {
     try {
       const credentials = request.body;
       const result = await UserModel.login(credentials);
-      response.status(200).send(result);
+      response.send(result);
     } catch (err) {
       response.send(err);
     }
@@ -26,7 +26,7 @@ export default class UserController {
         user['image'] = 'images/' + request['file'].filename;
       }
       const result = await UserModel.signup(user);
-      response.status(200).send(result);
+      response.send(result);
     } catch (err) {
       response.send(err);
     }
@@ -42,7 +42,7 @@ export default class UserController {
         user['image'] = 'images/' + request['file'].filename;
       }
       const result = await UserModel.updateUser(user);
-      response.status(200).send(result);
+      response.send(result);
     } catch (err) {
       response.send(err);
     }
@@ -55,7 +55,7 @@ export default class UserController {
     try {
       const { id } = request.params;
       const result = await UserModel.getUserById(id);
-      response.status(200).send(result);
+      response.send(result);
     } catch (err) {
       response.send(err);
     }
