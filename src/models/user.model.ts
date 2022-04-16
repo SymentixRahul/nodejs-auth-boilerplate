@@ -30,28 +30,30 @@ export default class UserModel {
             config.ENCRYPTION_KEY,
             { expiresIn: '7d' }
           );
-          return { token };
+          const res = {
+            message: 'User logged in successfully',
+            error: false,
+            data: { token, userId: user.id }
+          };
+          return res;
         } else {
           const errorDetails = {
-            code: 401,
-            error: 'UNAUTHORIZED',
-            originalInfo: 'Password not match'
+            error: true,
+            message: 'Password not match'
           };
           return errorDetails;
         }
       } else {
         const errorDetails = {
-          code: 401,
-          error: 'UNAUTHORIZED',
-          originalInfo: 'Login failed! User not available'
+          error: true,
+          message: 'Login failed! User not available'
         };
         return errorDetails;
       }
     } catch (err) {
       const errorDetails = {
-        code: 500,
-        error: 'SERVER_ERROR',
-        originalInfo: err
+        error: true,
+        message: err
       };
       return errorDetails;
     }
@@ -65,7 +67,7 @@ export default class UserModel {
       }
     });
     if (userExist) {
-      return 'user already exists';
+      return { message: 'User already exists', error: true };
     } else {
       if (
         userObject.password != 'undefined' &&
@@ -88,7 +90,12 @@ export default class UserModel {
         config.ENCRYPTION_KEY,
         { expiresIn: '7d' }
       );
-      return { token };
+      const res = {
+        message: 'User register successfully',
+        error: false,
+        data: { token, userId: user.id }
+      };
+      return res;
     }
   };
 
